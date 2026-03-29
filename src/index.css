@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* If Tailwind is working, the whole screen MUST turn red */
+@layer base {
+  body {
+    @apply bg-slate-50;
+  }
+}

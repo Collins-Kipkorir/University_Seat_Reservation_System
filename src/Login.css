@@ -1,0 +1,76 @@
+/* We keep the reset and body styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center; /* Vertical center */
+  justify-content: center; /* Horizontal center */
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #f4f6f9;
+  font-family: Arial, Helvetica, sans-serif;
+}
+h1, .header {
+  color: #000000 !important; /* Forces text to be Pure Black */
+  text-align: center;
+  margin-bottom: 20px;
+}
+.form-group {
+  margin-bottom: 25px; /* Adds space between each field */
+  text-align: left;    /* Pushes labels and inputs to start from the left */
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #000000;
+}
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* This ensures the padding doesn't make the box wider than the container */
+}    
+.btn {
+  width: 100%;             /* This makes it broad (full width of the container) */
+  padding: 14px;           /* Gives it that nice thickness */
+  background-color: #1a3c6d;
+  color: #ffffff !important; /* Forces the text to be White */
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;        /* Keeps the space above it */
+  display: block;          /* Ensures it takes up its own line */
+}
+.login-link a {
+  color: #1a3c6d !important; /* Matches the button blue */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+/* Your container and form styles */
+.container {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center; /* This centers the text/buttons inside the box */
+}
+
+/* ... keep all your other styles for h1, .form-group, .btn, etc. exactly as you wrote them ... */
