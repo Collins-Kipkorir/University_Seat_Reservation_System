@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'university_seat_reservation');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'Flowbiz');
+define('DB_PASS', 'FlowbizPOC2024!');
 
 function getDb() {
     static $pdo = null;
