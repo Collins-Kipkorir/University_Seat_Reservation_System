@@ -73,4 +73,13 @@ input[type="password"] {
   text-align: center; /* This centers the text/buttons inside the box */
 }
 
-/* ... keep all your other styles for h1, .form-group, .btn, etc. exactly as you wrote them ... */
+.error-msg {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: left;
+}

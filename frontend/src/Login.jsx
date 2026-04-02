@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
+import { auth } from './api';
 
 function Login() {
-  // 1. Create the "steering wheel" to change pages
   const navigate = useNavigate();
-
-  // 2. Setup "State" to remember what the user types
   const [studentId, setStudentId] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // 3. This function runs when the blue button is clicked
-  const handleLogin = (e) => {
-    e.preventDefault(); // Prevents the page from refreshing/reloading
-    
-    // For now, we allow any ID/Password to work. 
-    // Later, you can add: if(studentId === "admin") ...
-    console.log("Logging in with:", studentId);
-    
-    // 4. Send the user to the Home page (the Figma code we are adding next)
-    navigate('/home'); 
+  useEffect(() => {
+    auth.me().then((data) => {
+      if (data.authenticated) {
+        navigate('/home');
+      }
+    }).catch(() => {});
+  }, [navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await auth.login(studentId, password);
+      navigate('/home');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -27,32 +38,36 @@ function Login() {
       <div className="header">University Seat Reservation System</div>
       <h1>Log In</h1>
 
+      {error && <div className="error-msg">{error}</div>}
+
       <form onSubmit={handleLogin}>
         <div className="form-group">
           <label htmlFor="studentId">Student / Staff ID</label>
-          <input 
-            type="text" 
-            id="studentId" 
-            placeholder="e.g. STRATH/2023/1234" 
+          <input
+            type="text"
+            id="studentId"
+            placeholder="e.g. STRATH/2023/1234"
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            required 
+            required
           />
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            placeholder="At least 8 characters" 
+          <input
+            type="password"
+            id="password"
+            placeholder="At least 8 characters"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required 
+            required
           />
         </div>
 
-        <button type="submit" className="btn">Log In</button>
+        <button type="submit" className="btn" disabled={loading}>
+          {loading ? 'Logging in...' : 'Log In'}
+        </button>
       </form>
 
       <div className="login-link">
