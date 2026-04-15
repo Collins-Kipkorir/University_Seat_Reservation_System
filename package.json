@@ -1,0 +1,14 @@
+{
+  "name": "university-seat-reservation-system",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently -n \"PHP,Vite\" -c \"cyan,magenta\" \"npm run backend\" \"npm run frontend\"",
+    "backend": "C:/xampp/php/php.exe -S localhost:8000 -t backend",
+    "frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import { auth } from './api';
+import { PasswordChecklist } from './Components/PasswordChecklist';
 
 function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Show checklist only after the user first focuses the password field
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   useEffect(() => {
     auth.me().then((data) => {
@@ -58,11 +61,15 @@ function Login() {
           <input
             type="password"
             id="password"
-            placeholder="At least 8 characters"
+            placeholder="Your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setPasswordTouched(true)}
             required
           />
+          {/* Checklist is informational on login — it helps users recall the
+              format without blocking submission or locking out existing accounts. */}
+          <PasswordChecklist password={password} show={passwordTouched} />
         </div>
 
         <button type="submit" className="btn" disabled={loading}>
@@ -75,7 +82,7 @@ function Login() {
       </div>
 
       <div className="note">
-        After log In, you can view available seats and make reservations.
+        After log in, you can view available seats and make reservations.
       </div>
     </div>
   );

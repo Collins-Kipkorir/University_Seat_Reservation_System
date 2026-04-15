@@ -21,8 +21,14 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     errorResponse('Invalid email format.');
 }
 
-if (strlen($password) < 6) {
-    errorResponse('Password must be at least 6 characters.');
+if (strlen($password) < 8) {
+    errorResponse('Password must be at least 8 characters.');
+}
+if (!preg_match('/[A-Z]/', $password)) {
+    errorResponse('Password must contain at least one uppercase letter.');
+}
+if (!preg_match('/[^A-Za-z0-9]/', $password)) {
+    errorResponse('Password must contain at least one special character (e.g. !@#$%).');
 }
 
 if (!in_array($role, ['student', 'staff', 'guest'], true)) {

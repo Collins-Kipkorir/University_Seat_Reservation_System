@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import './Signup.css';
 import { auth } from './api';
+import { RULES, PasswordChecklist } from './Components/PasswordChecklist';
 
 function Signup() {
   const navigate = useNavigate();
@@ -16,27 +17,42 @@ function Signup() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // True when every rule passes
+  const passwordValid = useMemo(
+    () => RULES.every((r) => r.test(form.password)),
+    [form.password]
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // ── Validate password rules (mirrors backend register.php) ────────────
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters.');
+      return;
+    }
+    if (!/[A-Z]/.test(form.password)) {
+      setError('Password must contain at least one uppercase letter.');
+      return;
+    }
+    if (!/[^A-Za-z0-9]/.test(form.password)) {
+      setError('Password must contain at least one special character (e.g. !@#$%).');
+      return;
+    }
 
     if (form.password !== form.confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
-    if (form.password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-
     setLoading(true);
-
     try {
       await auth.register({
         student_id: form.studentId,
@@ -83,7 +99,17 @@ function Signup() {
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="At least 6 characters" value={form.password} onChange={handleChange} required />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="At least 8 characters"
+            value={form.password}
+            onChange={handleChange}
+            onFocus={() => setPasswordTouched(true)}
+            required
+          />
+          <PasswordChecklist password={form.password} show={passwordTouched} />
         </div>
 
         <div className="form-group">
@@ -100,12 +126,17 @@ function Signup() {
           </select>
         </div>
 
-        <button type="submit" className="btn" disabled={loading}>
+        <button
+          type="submit"
+          className="btn"
+          disabled={loading || (passwordTouched && !passwordValid)}
+          style={passwordTouched && !passwordValid ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+        >
           {loading ? 'Creating account...' : 'Sign Up'}
         </button>
 
         <div className="login-link">
-          Already have an account? <Link to="/">Log in</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </div>
       </form>
     </div>

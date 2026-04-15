@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(php --version)",
+      "Bash(npm --version)",
+      "Bash(/c/xampp/php/php.exe --version)"
+    ]
+  }
+}
